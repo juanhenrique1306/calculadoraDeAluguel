@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ title or "Orçamento de Aluguel - R.M" }}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900">
+  <nav class="bg-white border-b">
+    <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="/" class="font-bold text-lg">Imobiliária R.M</a>
+      <span class="text-sm text-slate-600">Orçamento de Aluguel</span>
+    </div>
+  </nav>
+
+  <main class="max-w-4xl mx-auto px-4 py-8">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="mb-6 space-y-2">
+          {% for m in messages %}
+            <div class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-700">
+              {{ m }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="mt-10 border-t bg-white">
+    <div class="max-w-4xl mx-auto px-4 py-6 text-sm text-slate-600">
+      Projeto acadêmico — Flask + Tailwind
+    </div>
+  </footer>
+</body>
+</html>

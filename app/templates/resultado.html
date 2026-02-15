@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="bg-white rounded-2xl shadow-sm border p-6">
+  <h1 class="text-2xl font-bold">Resultado do orçamento</h1>
+
+  <div class="mt-6 grid md:grid-cols-2 gap-4">
+    <div class="rounded-xl border p-4">
+      <h2 class="font-semibold">Dados</h2>
+      <ul class="mt-2 text-sm text-slate-700 space-y-1">
+        <li><span class="font-medium">Tipo:</span> {{ orcamento.tipo.value }}</li>
+
+        {% if orcamento.tipo.value != "estudio" %}
+          <li><span class="font-medium">Quartos:</span> {{ orcamento.quartos }}</li>
+          <li><span class="font-medium">Garagem:</span> {{ "Sim" if orcamento.tem_garagem else "Não" }}</li>
+        {% else %}
+          <li><span class="font-medium">Vagas:</span> {{ orcamento.vagas_estudio }}</li>
+        {% endif %}
+
+        {% if orcamento.tipo.value == "apartamento" %}
+          <li><span class="font-medium">Crianças:</span> {{ "Sim" if orcamento.tem_criancas else "Não" }}</li>
+        {% endif %}
+      </ul>
+    </div>
+
+    <div class="rounded-xl border p-4">
+      <h2 class="font-semibold">Valores</h2>
+      <div class="mt-3 space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-slate-600">Aluguel mensal</span>
+          <span class="font-bold text-lg">R$ {{ "%.2f"|format(mensal) }}</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-slate-600">Contrato</span>
+          <span class="font-semibold">R$ {{ "%.2f"|format(contrato_total) }}</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-slate-600">Parcelamento</span>
+          <span class="font-semibold">{{ parcelas_contrato }}x de R$ {{ "%.2f"|format(valor_parcela_contrato) }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-6 flex flex-col sm:flex-row gap-3">
+    <a href="/" class="rounded-xl border px-4 py-3 text-center font-semibold hover:bg-slate-50">
+      Novo orçamento
+    </a>
+
+    <form method="post" action="/exportar-csv" class="flex-1">
+      <input type="hidden" name="mensal" value="{{ mensal }}" />
+      <button class="w-full rounded-xl bg-emerald-600 text-white px-4 py-3 font-semibold hover:bg-emerald-500">
+        Baixar CSV (12 meses)
+      </button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

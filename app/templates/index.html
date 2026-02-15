@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="bg-white rounded-2xl shadow-sm border p-6">
+  <h1 class="text-2xl font-bold">Gerar orçamento</h1>
+  <p class="text-slate-600 mt-1">Preencha os dados e gere o orçamento do aluguel mensal.</p>
+
+  <form method="post" action="/orcamento" class="mt-6 space-y-6">
+
+    <div>
+      <label class="block text-sm font-medium">Tipo de imóvel</label>
+      <select name="tipo" id="tipo" class="mt-2 w-full rounded-lg border px-3 py-2">
+        <option value="apartamento">Apartamento</option>
+        <option value="casa">Casa</option>
+        <option value="estudio">Estúdio</option>
+      </select>
+    </div>
+
+    <div id="bloco_quartos">
+      <label class="block text-sm font-medium">Quartos</label>
+      <select name="quartos" class="mt-2 w-full rounded-lg border px-3 py-2">
+        <option value="1">1 quarto</option>
+        <option value="2">2 quartos</option>
+      </select>
+      <p class="text-xs text-slate-500 mt-1">Somente para casa/apartamento.</p>
+    </div>
+
+    <div id="bloco_garagem" class="flex items-center gap-3">
+      <input type="checkbox" name="tem_garagem" id="tem_garagem" class="h-4 w-4" />
+      <label for="tem_garagem" class="text-sm font-medium">Incluir garagem</label>
+      <span class="text-xs text-slate-500">(casa/apartamento +R$ 300)</span>
+    </div>
+
+    <div id="bloco_criancas">
+      <label class="block text-sm font-medium">Possui crianças? (desconto só para apartamento)</label>
+      <div class="mt-2 flex items-center gap-4">
+        <label class="flex items-center gap-2">
+          <input type="radio" name="tem_criancas" value="true" checked />
+          <span>Sim</span>
+        </label>
+        <label class="flex items-center gap-2">
+          <input type="radio" name="tem_criancas" value="false" />
+          <span>Não (5% desconto no apê)</span>
+        </label>
+      </div>
+    </div>
+
+    <div id="bloco_vagas_estudio" class="hidden">
+      <label class="block text-sm font-medium">Vagas no estúdio</label>
+      <input type="number" name="vagas_estudio" min="0" value="0"
+             class="mt-2 w-full rounded-lg border px-3 py-2" />
+      <p class="text-xs text-slate-500 mt-1">2 vagas +R$ 250; vagas extras +R$ 60 cada.</p>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium">Parcelas do contrato (R$ 2.000)</label>
+      <select name="parcelas_contrato" class="mt-2 w-full rounded-lg border px-3 py-2">
+        <option value="1">1x</option>
+        <option value="2">2x</option>
+        <option value="3">3x</option>
+        <option value="4">4x</option>
+        <option value="5">5x</option>
+      </select>
+    </div>
+
+    <button class="w-full rounded-xl bg-slate-900 text-white py-3 font-semibold hover:bg-slate-800">
+      Gerar orçamento
+    </button>
+  </form>
+</div>
+
+<script>
+  const tipo = document.getElementById("tipo");
+  const blocoQuartos = document.getElementById("bloco_quartos");
+  const blocoGaragem = document.getElementById("bloco_garagem");
+  const blocoCriancas = document.getElementById("bloco_criancas");
+  const blocoVagas = document.getElementById("bloco_vagas_estudio");
+
+  function atualizarUI() {
+    const v = tipo.value;
+    const isEstudio = (v === "estudio");
+    blocoQuartos.classList.toggle("hidden", isEstudio);
+    blocoGaragem.classList.toggle("hidden", isEstudio);
+    blocoCriancas.classList.toggle("hidden", isEstudio || v !== "apartamento");
+    blocoVagas.classList.toggle("hidden", !isEstudio);
+  }
+
+  tipo.addEventListener("change", atualizarUI);
+  atualizarUI();
+</script>
+
+{% endblock %}

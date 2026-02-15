@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+
+# Virtual environment
+venv/
+.env/
+
+# Flask
+instance/
+.webassets-cache
+
+# Environment variables
+.env
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Exports
+exports/*.csv
+
+# Logs
+*.log
